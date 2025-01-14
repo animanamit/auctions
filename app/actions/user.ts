@@ -1,6 +1,6 @@
 "use server";
 
-import { database } from "@/db/database";
+import { db } from "@/db/database";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
@@ -9,20 +9,20 @@ export async function createOrUpdateUser(
   name: string,
   email: string
 ) {
-  const existingUser = await database
+  const existingUser = await db
     .select()
     .from(users)
     .where(eq(users.clerkId, clerkId));
 
   if (existingUser.length === 0) {
-    await database.insert(users).values({
+    await db.insert(users).values({
       clerkId,
       name,
       email,
     });
     console.log("User created:", clerkId);
   } else {
-    await database
+    await db
       .update(users)
       .set({ name, email })
       .where(eq(users.clerkId, clerkId));
