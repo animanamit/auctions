@@ -12,6 +12,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { currentUser } from "@clerk/nextjs/server";
+import { Separator } from "@/components/ui/separator";
 
 // Menu items.
 const items = [
@@ -51,7 +52,11 @@ export async function AppSidebar() {
   const clerkUser = await currentUser();
   return (
     <Sidebar>
-      {clerkUser ? <SidebarHeader>{clerkUser.fullName}</SidebarHeader> : null}
+      {clerkUser ? (
+        <>
+          <SidebarHeader>{clerkUser.fullName}</SidebarHeader> <Separator />
+        </>
+      ) : null}
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
