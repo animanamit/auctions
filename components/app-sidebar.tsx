@@ -1,4 +1,4 @@
-import { Calendar, Coins, Home, Inbox, Search, Settings } from "lucide-react";
+import { Coins, Home } from "lucide-react";
 
 import {
   Sidebar,
@@ -18,7 +18,7 @@ import { Separator } from "@/components/ui/separator";
 const items = [
   {
     title: "Home",
-    url: "#",
+    url: "/",
     icon: Home,
   },
   {
@@ -26,27 +26,24 @@ const items = [
     url: "my-bids",
     icon: Coins,
   },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
 ];
+
+const Header = ({
+  name,
+  email,
+}: {
+  name: string | null;
+  email: string | null;
+}) => {
+  return (
+    <SidebarHeader>
+      <div className="text-sm flex flex-col gap-y-1 p-2">
+        <span>{name}</span>
+        <span>{email}</span>
+      </div>
+    </SidebarHeader>
+  );
+};
 
 export async function AppSidebar() {
   const clerkUser = await currentUser();
@@ -54,7 +51,11 @@ export async function AppSidebar() {
     <Sidebar>
       {clerkUser ? (
         <>
-          <SidebarHeader>{clerkUser.fullName}</SidebarHeader> <Separator />
+          <Header
+            name={clerkUser.fullName}
+            email={clerkUser.emailAddresses[0].emailAddress}
+          />
+          <Separator />
         </>
       ) : null}
       <SidebarContent>
