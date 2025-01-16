@@ -21,6 +21,9 @@ import { ClerkProvider } from "@clerk/nextjs";
 import Nav from "@/components/nav";
 import Sidebar from "@/components/sidebar";
 
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -29,12 +32,16 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <Nav />
-          <Sidebar />
-          {children}
+        <body>
+          <SidebarProvider>
+            <AppSidebar />
+            <main
+              className={`${geistSans.variable} ${geistMono.variable} antialiased w-full h-full`}
+            >
+              <SidebarTrigger />
+              {children}
+            </main>
+          </SidebarProvider>
         </body>
       </html>
     </ClerkProvider>
