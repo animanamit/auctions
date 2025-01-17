@@ -1,26 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Toaster } from "sonner";
+import { ClerkProvider } from "@clerk/nextjs";
+import { LayoutBody } from "./layout-body";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "Coin Auction House",
-  description: "Coin Auctions",
+  title: "Coin Auction Platform",
+  description: "A modern platform for coin auctions",
 };
-
-import { ClerkProvider } from "@clerk/nextjs";
-
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
 
 export default function RootLayout({
   children,
@@ -31,15 +18,8 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body>
-          <SidebarProvider>
-            <AppSidebar />
-            <main
-              className={`${geistSans.variable} ${geistMono.variable} antialiased w-full h-full`}
-            >
-              {/* <SidebarTrigger /> */}
-              {children}
-            </main>
-          </SidebarProvider>
+          <LayoutBody>{children}</LayoutBody>
+          <Toaster position="top-right" />
         </body>
       </html>
     </ClerkProvider>
