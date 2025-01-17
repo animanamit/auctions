@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AuctionCard } from "@/components/auction-card";
@@ -106,7 +106,7 @@ const myItems: AuctionItem[] = [
 ];
 
 export default function Dashboard() {
-  const router = useRouter();
+  // const router = useRouter();
   const [selectedAuction, setSelectedAuction] = useState<AuctionItem | null>(
     null
   );
@@ -189,7 +189,7 @@ export default function Dashboard() {
               <MyItemCard
                 key={item.id}
                 item={item}
-                onEditClick={() => router.push(`/edit-item/${item.id}`)}
+                // onEditClick={() => router.push(`/edit-item/${item.id}`)}
               />
             ))}
           </div>

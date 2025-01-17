@@ -15,10 +15,10 @@ import type { AuctionItem } from "@/types/auction";
 
 interface MyItemCardProps {
   item: AuctionItem;
-  onEditClick?: () => void;
+  // onEditClick?: () => void;
 }
 
-export function MyItemCard({ item, onEditClick }: MyItemCardProps) {
+export function MyItemCard({ item }: MyItemCardProps) {
   const router = useRouter();
   const startTime = item.scheduledStartTime
     ? new Date(item.scheduledStartTime)
@@ -93,7 +93,7 @@ export function MyItemCard({ item, onEditClick }: MyItemCardProps) {
           <Button
             className="col-span-2 rounded-full font-light"
             variant="outline"
-            onClick={onEditClick}
+            // onClick={onEditClick}
             disabled={item.isLive}
           >
             <Edit2 className="mr-2 h-4 w-4" />
