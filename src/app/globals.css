@@ -1,21 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  
+  /* Light theme colors */
+  --background: 0 0% 98%;
+  --foreground: 0 0% 3.9%;
+  
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 3.9%;
+  
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 3.9%;
+  
+  --primary: 220 14% 96%;
+  --primary-foreground: 220 14% 5%;
+  
+  --secondary: 20 14% 96%;
+  --secondary-foreground: 20 14% 5%;
+  
+  --muted: 0 0% 96.1%;
+  --muted-foreground: 0 0% 45.1%;
+  
+  --accent: 24 5% 96%;
+  --accent-foreground: 24 5% 5%;
+  
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+
+  --border: 20 5% 90%;
+  --input: 20 5% 90%;
+  --ring: 20 5% 90%;
+  
+  --radius: 0.5rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.gradient-avatar {
+  background: linear-gradient(135deg, #2A2A2A 0%, #434343 50%, #1a2421 100%);
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
+  font-weight: 300;
+  background-color: #FAF9F6;
 }
+
+.font-light {
+  font-weight: 200;
+}
+
+.font-normal {
+  font-weight: 300;
+}
+
+.font-medium {
+  font-weight: 400;
+}
+
+/* Remove shadows and borders */
+.card,
+.button,
+.input,
+.dropdown-menu {
+  @apply shadow-none border-0;
+}
+
+/* Custom notification badge */
+.notification-badge {
+  @apply bg-black/5 text-black/70;
+}
+
