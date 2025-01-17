@@ -43,7 +43,7 @@ export function Navbar() {
               <Button variant="ghost" size="icon" className="relative">
                 <Bell className="h-4 w-4" />
                 {unreadCount > 0 && (
-                  <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-black/5 text-xs font-medium text-black/70">
+                  <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-pink-500 text-xs font-medium text-white">
                     {unreadCount}
                   </span>
                 )}

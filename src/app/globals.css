@@ -17,11 +17,11 @@
   --popover: 0 0% 100%;
   --popover-foreground: 0 0% 3.9%;
   
-  --primary: 220 14% 96%;
-  --primary-foreground: 220 14% 5%;
+  --primary: 24 5% 96%;
+  --primary-foreground: 24 5% 5%;
   
-  --secondary: 20 14% 96%;
-  --secondary-foreground: 20 14% 5%;
+  --secondary: 20 5% 90%;
+  --secondary-foreground: 20 5% 5%;
   
   --muted: 0 0% 96.1%;
   --muted-foreground: 0 0% 45.1%;
@@ -71,6 +71,6 @@ body {
 
 /* Custom notification badge */
 .notification-badge {
-  @apply bg-black/5 text-black/70;
+  @apply bg-pink-500 text-white;
 }
 

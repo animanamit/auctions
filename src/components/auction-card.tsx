@@ -15,6 +15,7 @@ import { AuctionTimer } from "./auction-timer";
 
 import { format } from "date-fns";
 import { AuctionItem } from "@/types/auction";
+import { useState } from "react";
 
 interface AuctionCardProps {
   auction: AuctionItem;
@@ -27,6 +28,7 @@ export function AuctionCard({ auction }: AuctionCardProps) {
     ? new Date(auction.scheduledStartTime)
     : null;
   const isUpcoming = startTime && startTime > new Date();
+  const [isWatching, setIsWatching] = useState(false);
 
   return (
     <Card className="overflow-hidden bg-white">
@@ -41,18 +43,21 @@ export function AuctionCard({ auction }: AuctionCardProps) {
           <Button
             size="icon"
             variant="ghost"
+            onClick={() => setIsWatching(!isWatching)}
             className="absolute right-2 top-2 bg-white/80 backdrop-blur-sm hover:bg-white/90"
           >
-            <Heart className="h-4 w-4" />
+            <Heart
+              className={`h-4 w-4 ${
+                isWatching ? "fill-pink-500 text-pink-500" : ""
+              }`}
+            />
           </Button>
-          {isUpcoming && (
-            <Badge
-              variant="secondary"
-              className="absolute left-2 top-2 bg-blue-50 text-blue-600"
-            >
-              Upcoming
-            </Badge>
-          )}
+          <Badge
+            variant="secondary"
+            className="absolute left-2 top-2 bg-secondary text-secondary-foreground"
+          >
+            Upcoming
+          </Badge>
         </div>
       </CardHeader>
       <CardContent className="grid gap-2.5 p-4">

@@ -42,7 +42,10 @@ export function MyItemCard({ item }: MyItemCardProps) {
               </Badge>
             )}
             {isUpcoming && (
-              <Badge variant="secondary" className="bg-blue-50 text-blue-600">
+              <Badge
+                variant="secondary"
+                className="bg-secondary text-secondary-foreground"
+              >
                 Scheduled
               </Badge>
             )}
