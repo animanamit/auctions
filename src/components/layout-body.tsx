@@ -11,7 +11,7 @@ export function LayoutBody({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-[#FAF9F6]">
       {!isAuthPage && <Navbar />}
-      <main>{children}</main>
+      <main className="flex justify-center">{children}</main>
     </div>
   );
 }

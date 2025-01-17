@@ -20,7 +20,7 @@ export function Navbar() {
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex justify-center">
       <div className="container flex h-14 items-center">
         <Link href="/" className="flex items-center gap-2">
           <Coins className="h-5 w-5" />
@@ -97,8 +97,8 @@ export function Navbar() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                <Avatar className="h-8 w-8 gradient-avatar">
-                  <AvatarFallback className="font-light text-white">
+                <Avatar className="h-8 w-8 gradient-avatar ">
+                  <AvatarFallback className="font-light text-white bg-gradient-to-b from-[#848F8D] via-[#353939]  to-black">
                     AA
                   </AvatarFallback>
                 </Avatar>
