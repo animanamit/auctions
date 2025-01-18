@@ -37,20 +37,23 @@ export function MyItemCard({ item }: MyItemCardProps) {
           />
           <div className="absolute right-2 top-2 flex gap-2">
             {!item.isLive && !isUpcoming && (
-              <Badge variant="secondary" className="bg-gray-100">
+              <Badge variant="secondary" className="bg-gray-100 font-medium">
                 Draft
               </Badge>
             )}
             {isUpcoming && (
               <Badge
                 variant="secondary"
-                className="bg-secondary text-secondary-foreground"
+                className="bg-secondary text-secondary-foreground font-medium"
               >
                 Scheduled
               </Badge>
             )}
             {item.isLive && (
-              <Badge variant="secondary" className="bg-green-50 text-green-600">
+              <Badge
+                variant="secondary"
+                className="bg-green-50 text-green-600 font-medium"
+              >
                 Live
               </Badge>
             )}

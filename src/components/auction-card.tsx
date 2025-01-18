@@ -54,7 +54,7 @@ export function AuctionCard({ auction }: AuctionCardProps) {
           </Button>
           <Badge
             variant="secondary"
-            className="absolute left-2 top-2 bg-secondary text-secondary-foreground"
+            className="absolute left-2 top-2 bg-secondary text-secondary-foreground font-medium"
           >
             Upcoming
           </Badge>
