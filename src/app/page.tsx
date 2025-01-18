@@ -24,7 +24,7 @@ const auctions: AuctionItem[] = [
     sellerId: 1,
     isLive: true,
     scheduledStartTime: new Date(Date.now() - 3600000), // 1 hour ago
-    duration: 24,
+    duration: 2,
     photos: {
       obsPhoto:
         "https://pxqmxxjuewlpptvibnhg.supabase.co/storage/v1/object/public/coins/coins/obs-df2fa651-33ae-430b-a11f-900ad465b13e",
@@ -46,7 +46,7 @@ const auctions: AuctionItem[] = [
     sellerId: 2,
     isLive: true,
     scheduledStartTime: new Date(Date.now() - 7200000), // 2 hours ago
-    duration: 48,
+    duration: 2,
     photos: {
       obsPhoto:
         "https://pxqmxxjuewlpptvibnhg.supabase.co/storage/v1/object/public/coins/coins/obs-df2fa651-33ae-430b-a11f-900ad465b13e",
@@ -68,7 +68,7 @@ const auctions: AuctionItem[] = [
     sellerId: 3,
     isLive: false,
     scheduledStartTime: new Date(Date.now() + 3600000), // 1 hour from now
-    duration: 72,
+    duration: 2,
     photos: {
       obsPhoto:
         "https://pxqmxxjuewlpptvibnhg.supabase.co/storage/v1/object/public/coins/coins/obs-df2fa651-33ae-430b-a11f-900ad465b13e",
