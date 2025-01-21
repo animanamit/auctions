@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Clock, Eye, Heart } from "lucide-react";
+import { Clock, Eye } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -46,7 +46,7 @@ export function AuctionCard({ auction }: AuctionCardProps) {
             onClick={() => setIsWatching(!isWatching)}
             className="absolute right-2 top-2 bg-white/80 backdrop-blur-sm hover:bg-white/90"
           >
-            <Heart
+            <Eye
               className={`h-4 w-4 ${
                 isWatching ? "fill-pink-500 text-pink-500" : ""
               }`}

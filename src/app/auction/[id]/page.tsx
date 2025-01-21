@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Eye, Heart } from "lucide-react";
+import { Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { BidDialog } from "@/components/bid-dialog";
@@ -159,7 +159,7 @@ export default function AuctionPage() {
                   className="rounded-full"
                   onClick={() => setIsWatching(!isWatching)}
                 >
-                  <Heart
+                  <Eye
                     className={`h-4 w-4 ${
                       isWatching ? "fill-current text-pink-500" : ""
                     }`}
