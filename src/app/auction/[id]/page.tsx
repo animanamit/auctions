@@ -160,9 +160,7 @@ export default function AuctionPage() {
                   onClick={() => setIsWatching(!isWatching)}
                 >
                   <Eye
-                    className={`h-4 w-4 ${
-                      isWatching ? "fill-current text-pink-500" : ""
-                    }`}
+                    className={`h-4 w-4 ${isWatching ? "fill-current" : ""}`}
                   />
                 </Button>
               </div>

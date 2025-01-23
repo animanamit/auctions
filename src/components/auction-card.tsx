@@ -46,11 +46,7 @@ export function AuctionCard({ auction }: AuctionCardProps) {
             onClick={() => setIsWatching(!isWatching)}
             className="absolute right-2 top-2 bg-white/80 backdrop-blur-sm hover:bg-white/90"
           >
-            <Eye
-              className={`h-4 w-4 ${
-                isWatching ? "fill-pink-500 text-pink-500" : ""
-              }`}
-            />
+            <Eye className={`h-4 w-4 ${isWatching ? "" : ""}`} />
           </Button>
           <Badge
             variant="secondary"
