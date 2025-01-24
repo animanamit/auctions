@@ -8,6 +8,13 @@ export const metadata: Metadata = {
   description: "A modern platform for coin auctions",
 };
 
+import localFont from "next/font/local";
+
+const sanserif = localFont({
+  src: "/fonts/PPNeueMontreal-Regular.woff2",
+  display: "swap",
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -15,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className={`${sanserif.className}`}>
         <LayoutBody>{children}</LayoutBody>
         <Toaster position="top-right" />
       </body>
