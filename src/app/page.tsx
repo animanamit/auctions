@@ -9,6 +9,7 @@ import { MyItemCard } from "@/components/my-item-card";
 import { BidDialog } from "@/components/bid-dialog";
 import { useBudgetStore } from "@/lib/stores/budget-store";
 import type { AuctionItem } from "@/types/auction";
+import { useRouter } from "next/navigation";
 
 // Sample data
 const auctions: AuctionItem[] = [
@@ -106,7 +107,7 @@ const myItems: AuctionItem[] = [
 ];
 
 export default function Dashboard() {
-  // const router = useRouter();
+  const router = useRouter();
   const [selectedAuction, setSelectedAuction] = useState<AuctionItem | null>(
     null
   );
@@ -189,7 +190,7 @@ export default function Dashboard() {
               <MyItemCard
                 key={item.id}
                 item={item}
-                // onEditClick={() => router.push(`/edit-item/${item.id}`)}
+                onEditClick={() => router.push(`/edit-item/${item.id}`)}
               />
             ))}
           </div>
