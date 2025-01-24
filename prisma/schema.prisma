@@ -48,6 +48,8 @@ model Auction {
   updatedAt     DateTime? @updatedAt
   watchCount    Int
   bidCount      Int
+  photo1        String?
+  photo2        String?
   bids          Bid[]
   seller        User     @relation(fields: [sellerId], references: [id])
 }
