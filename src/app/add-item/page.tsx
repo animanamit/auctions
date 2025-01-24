@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState } from "react";
@@ -16,9 +17,10 @@ import {
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import { prisma } from "@/lib/prisma";
 
 export default function AddItemPage() {
-  const router = useRouter();
+  // const router = useRouter();
   const [date, setDate] = useState<Date>();
   const [time, setTime] = useState("");
   const [duration, setDuration] = useState("2");
@@ -28,13 +30,34 @@ export default function AddItemPage() {
     e.preventDefault();
     setUploading(true);
 
-    // Simulate upload delay
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    if (!date) {
+      toast.error("Please select a start date.");
+      setUploading(false);
+      return;
+    }
 
-    toast.success(
-      "Item added successfully! It will go live at the scheduled time."
-    );
-    router.push("/");
+    const formData = new FormData();
+    const form = e.target as HTMLFormElement;
+
+    formData.append("title", form.title);
+    formData.append("description", form.description.value);
+    formData.append("date", date.toISOString());
+    formData.append("startingPrice", form.startingPrice.value);
+    formData.append("duration", duration);
+
+    const response = await fetch("/api/add-auction-item", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (response.ok) {
+      toast.success("Item added successfully!");
+    } else {
+      const error = await response.json();
+      toast.error(error.error || "Failed to add item");
+    }
+
+    setUploading(false);
   };
 
   return (
@@ -121,7 +144,7 @@ export default function AddItemPage() {
                 </PopoverContent>
               </Popover>
             </div>
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <Label htmlFor="time">Start Time</Label>
               <Input
                 id="time"
@@ -131,10 +154,10 @@ export default function AddItemPage() {
                 className="bg-white"
                 required
               />
-            </div>
+            </div> */}
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          {/* <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="obsPhoto">Obverse Photo</Label>
               <Input
@@ -180,7 +203,7 @@ export default function AddItemPage() {
                 className="bg-white"
               />
             </div>
-          </div>
+          </div> */}
 
           <Button
             type="submit"
