@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 import localFont from "next/font/local";
 
 const sanserif = localFont({
-  src: "/fonts/PPNeueMontreal-Regular.woff2",
+  src: "/PPNeueMontreal-Regular.woff2",
   display: "swap",
 });
 
