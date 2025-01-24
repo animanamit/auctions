@@ -1,4 +1,3 @@
-// app/api/add-auction-item/route.ts
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
@@ -6,17 +5,20 @@ export async function POST(request: Request) {
   const formData = await request.formData();
   const title = formData.get("title");
   const description = formData.get("description");
-  const date = formData.get("date");
+  const startingPrice = formData.get("startingPrice");
+  const duration = formData.get("duration");
+  const startDate = formData.get("startDate");
 
-  if (!title || !description || !date) {
+  if (!title || !description || !startingPrice || !duration || !startDate) {
     return NextResponse.json(
       { error: "Missing required fields" },
       { status: 400 }
     );
   }
 
+  const auctionStart = new Date(startDate.toString());
   const auctionEnd = new Date(
-    new Date(date.toString()).getTime() + 2 * 60 * 60 * 1000
+    auctionStart.getTime() + Number.parseInt(duration.toString()) * 60 * 1000
   );
 
   try {
@@ -24,11 +26,11 @@ export async function POST(request: Request) {
       data: {
         title: title.toString(),
         description: description.toString(),
-        startingPrice: 1000,
-        currentPrice: 1000,
+        startingPrice: Number.parseFloat(startingPrice.toString()),
+        currentPrice: Number.parseFloat(startingPrice.toString()),
         isSold: false,
-        sellerId: 1,
-        startDate: new Date(),
+        sellerId: 1, // Hardcoded user ID for testing
+        startDate: auctionStart,
         endDate: auctionEnd,
         isLive: false,
         watchCount: 0,
@@ -36,12 +38,13 @@ export async function POST(request: Request) {
       },
     });
 
+    console.log("New auction item created:", newAuctionItem);
     return NextResponse.json(newAuctionItem, { status: 201 });
   } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { error: "Error creating auction item" },
-      { status: 500 }
-    );
+    console.error("Error creating auction item:", error);
+    return NextResponse.json({
+      error: "Error creating auction item",
+      status: 500,
+    });
   }
 }
