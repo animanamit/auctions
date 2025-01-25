@@ -122,7 +122,7 @@ export default function AuctionPage() {
         {/* Auction Details */}
         <div className="space-y-6">
           <div>
-            <h1 className="text-3xl font-light">{auction.name}</h1>
+            <h1 className="text-3xl font-thin">{auction.name}</h1>
             <p className="mt-2 text-muted-foreground">{auction.description}</p>
           </div>
 
@@ -130,7 +130,7 @@ export default function AuctionPage() {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Current Bid</span>
-                <span className="text-2xl font-light">
+                <span className="text-2xl font-thin">
                   ${auction.currentPrice?.toLocaleString()}
                 </span>
               </div>
@@ -148,7 +148,7 @@ export default function AuctionPage() {
 
               <div className="flex gap-2">
                 <Button
-                  className="flex-1 rounded-full font-light"
+                  className="flex-1 rounded-full font-thin"
                   onClick={() => setShowBidDialog(true)}
                 >
                   Place Bid
@@ -171,10 +171,10 @@ export default function AuctionPage() {
           <Card className="bg-white p-6">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-light">Bid History</h2>
+                <h2 className="text-xl font-thin">Bid History</h2>
                 <Button
                   variant="ghost"
-                  className="rounded-full text-sm font-light"
+                  className="rounded-full text-sm font-thin"
                   onClick={() => setShowBidderNames(!showBidderNames)}
                 >
                   {showBidderNames ? "Hide Names" : "Show Names"}
@@ -198,7 +198,7 @@ export default function AuctionPage() {
                         {bid.timestamp.toLocaleString()}
                       </p>
                     </div>
-                    <span className="text-lg font-light">
+                    <span className="text-lg font-thin">
                       ${bid.amount.toLocaleString()}
                     </span>
                   </div>

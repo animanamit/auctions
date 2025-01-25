@@ -41,7 +41,7 @@ export default function AddItemPage() {
     <div className="container max-w-2xl py-8">
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-light">Add Item for Auction</h1>
+          <h1 className="text-2xl font-thin">Add Item for Auction</h1>
           <p className="text-sm text-muted-foreground">
             Fill in the details below to list your item for auction.
           </p>
@@ -184,7 +184,7 @@ export default function AddItemPage() {
 
           <Button
             type="submit"
-            className="w-full rounded-full font-light"
+            className="w-full rounded-full font-thin"
             disabled={uploading}
           >
             {uploading ? "Adding Item..." : "Add Item"}

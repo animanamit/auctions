@@ -26,7 +26,7 @@ export default function UploadPage() {
     <div className="container max-w-2xl py-8">
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl font-light">
+          <CardTitle className="text-2xl font-thin">
             Upload Coin for Auction
           </CardTitle>
         </CardHeader>

@@ -61,7 +61,7 @@ export function MyItemCard({ item }: MyItemCardProps) {
         </div>
       </CardHeader>
       <CardContent className="grid gap-2.5 p-4">
-        <h3 className="font-light text-lg">{item.name}</h3>
+        <h3 className="font-thin text-lg">{item.name}</h3>
         <div className="flex items-center justify-between text-sm text-muted-foreground">
           <span>Starting Price</span>
           <span className="font-medium text-foreground">
@@ -89,7 +89,7 @@ export function MyItemCard({ item }: MyItemCardProps) {
       <CardFooter className="grid grid-cols-2 gap-2 p-4 pt-0">
         {item.isLive ? (
           <Button
-            className="col-span-2 rounded-full font-light"
+            className="col-span-2 rounded-full font-thin"
             onClick={() => router.push(`/auction/${item.id}`)}
           >
             <Eye className="mr-2 h-4 w-4" />
@@ -97,7 +97,7 @@ export function MyItemCard({ item }: MyItemCardProps) {
           </Button>
         ) : (
           <Button
-            className="col-span-2 rounded-full font-light"
+            className="col-span-2 rounded-full font-thin"
             variant="outline"
             // onClick={onEditClick}
             disabled={item.isLive}

@@ -115,8 +115,8 @@ export default function Dashboard() {
   return (
     <div className="container py-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-light text-gray-900">Welcome Animan</h1>
-        <p className="mt-2 text-base font-light text-gray-500">
+        <h1 className="text-4xl font-thin text-gray-900">Welcome Animan</h1>
+        <p className="mt-2 text-base font-thin text-gray-500">
           Track your auctions and manage your bids
         </p>
       </div>
@@ -124,15 +124,15 @@ export default function Dashboard() {
       {/* Budget Display */}
       <Card className="mb-8 bg-black/5">
         <CardHeader>
-          <CardTitle className="text-lg font-light text-gray-900">
+          <CardTitle className="text-lg font-thin text-gray-900">
             Available Budget
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-4xl font-light text-gray-900">
+          <p className="text-4xl font-thin text-gray-900">
             ${budget.toLocaleString()}
           </p>
-          <p className="mt-2 text-sm font-light text-gray-500">
+          <p className="mt-2 text-sm font-thin text-gray-500">
             This budget will automatically update as you place and cancel bids
           </p>
         </CardContent>

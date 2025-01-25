@@ -24,7 +24,7 @@ export function Navbar() {
       <div className="container flex h-14 items-center">
         <Link href="/" className="flex items-center gap-2">
           <Coins className="h-5 w-5" />
-          <span className="text-xl font-light">CoinBid</span>
+          <span className="text-xl font-thin">CoinBid</span>
         </Link>
 
         <div className="flex flex-1 items-center justify-end gap-4">
@@ -34,7 +34,7 @@ export function Navbar() {
               className="gap-2 rounded-full bg-black/5 px-4 hover:bg-black/10"
             >
               <Plus className="h-4 w-4" />
-              <span className="font-light">Add Item</span>
+              <span className="font-thin">Add Item</span>
             </Button>
           </Link>
 
@@ -53,7 +53,7 @@ export function Navbar() {
               align="end"
               className="w-[380px] rounded-lg bg-white p-0"
             >
-              <DropdownMenuLabel className="p-4 font-light">
+              <DropdownMenuLabel className="p-4 font-thin">
                 Notifications
               </DropdownMenuLabel>
               <DropdownMenuSeparator className="opacity-50" />
@@ -98,7 +98,7 @@ export function Navbar() {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8 gradient-avatar ">
-                  <AvatarFallback className="font-light text-white bg-gradient-to-b from-[#848F8D] via-[#353939]  to-black">
+                  <AvatarFallback className="font-thin text-white bg-gradient-to-b from-[#848F8D] via-[#353939]  to-black">
                     AA
                   </AvatarFallback>
                 </Avatar>
@@ -119,7 +119,7 @@ export function Navbar() {
               <DropdownMenuSeparator className="opacity-50" />
               <DropdownMenuItem className="gap-2">
                 <LogOut className="h-4 w-4" />
-                <span className="font-light">Log out</span>
+                <span className="font-thin">Log out</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

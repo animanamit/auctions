@@ -57,7 +57,7 @@ export function AuctionCard({ auction }: AuctionCardProps) {
         </div>
       </CardHeader>
       <CardContent className="grid gap-2.5 p-4">
-        <h3 className="font-light text-lg">{auction.name}</h3>
+        <h3 className="font-thin text-lg">{auction.name}</h3>
         {isUpcoming ? (
           <>
             <div className="flex items-center justify-between text-sm text-muted-foreground">
@@ -107,14 +107,14 @@ export function AuctionCard({ auction }: AuctionCardProps) {
         </div>
         {auction.isLive ? (
           <Button
-            className="rounded-full font-light"
+            className="rounded-full font-thin"
             onClick={() => router.push(`/auction/${auction.id}`)}
           >
             View Details
           </Button>
         ) : (
           <Button
-            className="rounded-full font-light"
+            className="rounded-full font-thin"
             variant="outline"
             disabled={!auction.isLive}
           >
