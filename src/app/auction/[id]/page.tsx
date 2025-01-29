@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState } from "react";
@@ -5,7 +6,7 @@ import Image from "next/image";
 import { Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { BidDialog } from "@/components/bid-dialog";
+import { BidForm } from "@/components/bid-dialog";
 import { AuctionTimer } from "@/components/auction-timer";
 import type { AuctionItem, Bid } from "@/types/auction";
 
@@ -29,8 +30,12 @@ const sampleBids: Bid[] = [
   },
 ];
 
+const makeBid = async (bidValue: number) => {
+  // Call API to make bid
+  console.log(bidValue);
+};
+
 export default function AuctionPage() {
-  const [showBidDialog, setShowBidDialog] = useState(false);
   const [isWatching, setIsWatching] = useState(false);
   const [showBidderNames, setShowBidderNames] = useState(false);
 
@@ -148,12 +153,6 @@ export default function AuctionPage() {
 
               <div className="flex gap-2">
                 <Button
-                  className="flex-1 rounded-full font-thin"
-                  onClick={() => setShowBidDialog(true)}
-                >
-                  Place Bid
-                </Button>
-                <Button
                   variant="outline"
                   size="icon"
                   className="rounded-full"
@@ -164,6 +163,11 @@ export default function AuctionPage() {
                   />
                 </Button>
               </div>
+
+              <BidForm
+                auctionTitle={auction.name}
+                currentBid={auction.currentPrice || auction.startingPrice}
+              />
             </div>
           </Card>
 
@@ -208,13 +212,6 @@ export default function AuctionPage() {
           </Card>
         </div>
       </div>
-
-      <BidDialog
-        open={showBidDialog}
-        onOpenChange={setShowBidDialog}
-        auctionTitle={auction.name}
-        currentBid={auction.currentPrice || auction.startingPrice}
-      />
     </div>
   );
 }

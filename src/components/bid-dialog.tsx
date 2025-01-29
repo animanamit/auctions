@@ -2,33 +2,18 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useBudgetStore } from "@/lib/stores/budget-store";
 import { useNotificationStore } from "@/lib/stores/notification-store";
 
-interface BidDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
+interface BidFormProps {
   auctionTitle: string;
   currentBid: number;
 }
 
-export function BidDialog({
-  open,
-  onOpenChange,
-  auctionTitle,
-  currentBid,
-}: BidDialogProps) {
+export function BidForm({ auctionTitle, currentBid }: BidFormProps) {
   const [bidAmount, setBidAmount] = useState(currentBid + 10);
   const { budget, updateBudget } = useBudgetStore();
   const { addNotification } = useNotificationStore();
@@ -50,20 +35,11 @@ export function BidDialog({
       message: `You placed a bid of $${bidAmount.toLocaleString()} on ${auctionTitle}`,
     });
     toast.success("Bid placed successfully!");
-    onOpenChange(false);
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Place a Bid</DialogTitle>
-          <DialogDescription>
-            Current bid is ${currentBid.toLocaleString()}. Your available budget
-            is ${budget.toLocaleString()}
-          </DialogDescription>
-        </DialogHeader>
-
+    <div>
+      <div>
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
             <Label htmlFor="bid">Your Bid Amount</Label>
@@ -81,13 +57,10 @@ export function BidDialog({
           </div>
         </div>
 
-        <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
-          </Button>
+        <div>
           <Button onClick={handleBid}>Place Bid</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </div>
+      </div>
+    </div>
   );
 }

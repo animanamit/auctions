@@ -1,14 +1,13 @@
 "use client";
 
-import { useState } from "react";
 // import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AuctionCard } from "@/components/auction-card";
 import { MyItemCard } from "@/components/my-item-card";
-import { BidDialog } from "@/components/bid-dialog";
 import { useBudgetStore } from "@/lib/stores/budget-store";
 import type { AuctionItem } from "@/types/auction";
+import { useRouter } from "next/navigation";
 
 // Sample data
 const auctions: AuctionItem[] = [
@@ -106,10 +105,7 @@ const myItems: AuctionItem[] = [
 ];
 
 export default function Dashboard() {
-  // const router = useRouter();
-  const [selectedAuction, setSelectedAuction] = useState<AuctionItem | null>(
-    null
-  );
+  const router = useRouter();
   const { budget } = useBudgetStore();
 
   return (
@@ -150,11 +146,7 @@ export default function Dashboard() {
         <TabsContent value="active" className="space-y-4">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {auctions.map((auction) => (
-              <AuctionCard
-                key={auction.id}
-                auction={auction}
-                onBidClick={() => setSelectedAuction(auction)}
-              />
+              <AuctionCard key={auction.id} auction={auction} />
             ))}
           </div>
         </TabsContent>
@@ -162,11 +154,7 @@ export default function Dashboard() {
         <TabsContent value="watching" className="space-y-4">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {auctions.slice(0, 2).map((auction) => (
-              <AuctionCard
-                key={auction.id}
-                auction={auction}
-                onBidClick={() => setSelectedAuction(auction)}
-              />
+              <AuctionCard key={auction.id} auction={auction} />
             ))}
           </div>
         </TabsContent>
@@ -174,11 +162,7 @@ export default function Dashboard() {
         <TabsContent value="mybids" className="space-y-4">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {auctions.slice(1, 3).map((auction) => (
-              <AuctionCard
-                key={auction.id}
-                auction={auction}
-                onBidClick={() => setSelectedAuction(auction)}
-              />
+              <AuctionCard key={auction.id} auction={auction} />
             ))}
           </div>
         </TabsContent>
@@ -189,23 +173,12 @@ export default function Dashboard() {
               <MyItemCard
                 key={item.id}
                 item={item}
-                // onEditClick={() => router.push(`/edit-item/${item.id}`)}
+                onEditClick={() => router.push(`/edit-item/${item.id}`)}
               />
             ))}
           </div>
         </TabsContent>
       </Tabs>
-
-      {selectedAuction && (
-        <BidDialog
-          open={!!selectedAuction}
-          onOpenChange={(open) => !open && setSelectedAuction(null)}
-          auctionTitle={selectedAuction.name}
-          currentBid={
-            selectedAuction.currentPrice || selectedAuction.startingPrice
-          }
-        />
-      )}
     </div>
   );
 }

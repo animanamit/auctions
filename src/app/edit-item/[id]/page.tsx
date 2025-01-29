@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -38,10 +39,14 @@ const formSchema = z.object({
   startDate: z.date(),
 });
 
-export default function AddItemPage() {
+type FormData = z.infer<typeof formSchema>;
+
+export default function EditItemPage({ params }: { params: { id: string } }) {
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
@@ -52,7 +57,40 @@ export default function AddItemPage() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  useEffect(() => {
+    const fetchItem = async () => {
+      try {
+        const response = await fetch(`/api/get-item-by-id/${params.id}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch item");
+        }
+        const item = await response.json();
+
+        const startDate = new Date(item.startDate);
+        const endDate = new Date(item.endDate);
+        const duration = Math.round(
+          (endDate.getTime() - startDate.getTime()) / (60 * 1000)
+        );
+
+        form.reset({
+          title: item.title,
+          description: item.description,
+          startingPrice: item.startingPrice,
+          duration: duration,
+          startDate: startDate,
+        });
+      } catch (error) {
+        console.error("Error fetching item:", error);
+        toast.error("Failed to load item details");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchItem();
+  }, [params.id, form]);
+
+  async function onSubmit(values: FormData) {
     setUploading(true);
     try {
       const formData = new FormData();
@@ -64,38 +102,37 @@ export default function AddItemPage() {
         }
       });
 
-      // Log the FormData entries
-      for (const [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-      }
-
-      const response = await fetch("/api/add-auction-item", {
-        method: "POST",
+      const response = await fetch(`/api/edit-auction-item/${params.id}`, {
+        method: "PUT",
         body: formData,
       });
 
       if (response.ok) {
-        toast.success("Item added successfully!");
-        form.reset();
+        toast.success("Item updated successfully!");
+        router.push("/"); // Redirect to home or item list page
       } else {
         const error = await response.json();
-        toast.error(error.error || "Failed to add item");
+        toast.error(error.error || "Failed to update item");
       }
     } catch (error) {
       console.error("Submission error:", error);
-      toast.error("Failed to submit form");
+      toast.error("Failed to update item");
     } finally {
       setUploading(false);
     }
+  }
+
+  if (loading) {
+    return <div className="container max-w-2xl py-8">Loading...</div>;
   }
 
   return (
     <div className="container max-w-2xl py-8">
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-thin">Add Item for Auction</h1>
+          <h1 className="text-2xl font-light">Edit Auction Item</h1>
           <p className="text-sm text-muted-foreground">
-            Fill in the details below to list your item for auction.
+            Update the details of your auction item below.
           </p>
         </div>
 
@@ -226,10 +263,10 @@ export default function AddItemPage() {
 
             <Button
               type="submit"
-              className="w-full rounded-full font-thin"
+              className="w-full rounded-full font-light"
               disabled={uploading}
             >
-              {uploading ? "Adding Item..." : "Add Item"}
+              {uploading ? "Updating Item..." : "Update Item"}
             </Button>
           </form>
         </Form>
