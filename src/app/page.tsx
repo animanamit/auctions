@@ -1,125 +1,139 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AuctionCard } from "@/components/auction-card";
-import { MyItemCard } from "@/components/my-item-card";
 import { useBudgetStore } from "@/lib/stores/budget-store";
 import type { AuctionItem } from "@/types/auction";
 import { useRouter } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-const loggedInUserId = 1;
-
-// Sample data
-// const auctions: AuctionItem[] = [
-//   {
-//     id: 1,
-//     name: "1909 VDB Lincoln Cent",
-//     description: "Rare first-year Lincoln Cent",
-//     startingPrice: 1000,
-//     currentPrice: 1250,
-//     isSold: false,
-//     createdAt: new Date(),
-//     updatedAt: new Date(),
-//     sellerId: 1,
-//     isLive: true,
-//     scheduledStartTime: new Date(Date.now() - 3600000), // 1 hour ago
-//     duration: 2,
-//     photos: {
-//       obsPhoto:
-//         "https://pxqmxxjuewlpptvibnhg.supabase.co/storage/v1/object/public/coins/coins/obs-df2fa651-33ae-430b-a11f-900ad465b13e",
-//       revPhoto:
-//         "https://pxqmxxjuewlpptvibnhg.supabase.co/storage/v1/object/public/coins/coins/rev-df2fa651-33ae-430b-a11f-900ad465b13e",
-//     },
-//     watchCount: 45,
-//     bidCount: 12,
-//   },
-//   {
-//     id: 2,
-//     name: "1955 Double Die Lincoln Cent",
-//     description: "Famous error coin",
-//     startingPrice: 800,
-//     currentPrice: 980,
-//     isSold: false,
-//     createdAt: new Date(),
-//     updatedAt: new Date(),
-//     sellerId: 2,
-//     isLive: true,
-//     scheduledStartTime: new Date(Date.now() - 7200000), // 2 hours ago
-//     duration: 2,
-//     photos: {
-//       obsPhoto:
-//         "https://pxqmxxjuewlpptvibnhg.supabase.co/storage/v1/object/public/coins/coins/obs-df2fa651-33ae-430b-a11f-900ad465b13e",
-//       revPhoto:
-//         "https://pxqmxxjuewlpptvibnhg.supabase.co/storage/v1/object/public/coins/coins/rev-df2fa651-33ae-430b-a11f-900ad465b13e",
-//     },
-//     watchCount: 32,
-//     bidCount: 8,
-//   },
-//   {
-//     id: 3,
-//     name: "1804 Draped Bust Silver Dollar",
-//     description: "One of the rarest U.S. coins",
-//     startingPrice: 1200,
-//     currentPrice: 1500,
-//     isSold: false,
-//     createdAt: new Date(),
-//     updatedAt: new Date(),
-//     sellerId: 3,
-//     isLive: false,
-//     scheduledStartTime: new Date(Date.now() + 3600000), // 1 hour from now
-//     duration: 2,
-//     photos: {
-//       obsPhoto:
-//         "https://pxqmxxjuewlpptvibnhg.supabase.co/storage/v1/object/public/coins/coins/obs-df2fa651-33ae-430b-a11f-900ad465b13e",
-//       revPhoto:
-//         "https://pxqmxxjuewlpptvibnhg.supabase.co/storage/v1/object/public/coins/coins/rev-df2fa651-33ae-430b-a11f-900ad465b13e",
-//     },
-//     watchCount: 67,
-//     bidCount: 0,
-//   },
-// ];
-
-// const myItems: AuctionItem[] = [
-//   {
-//     id: 4,
-//     name: "1933 Double Eagle",
-//     description: "Extremely rare gold coin",
-//     startingPrice: 5000,
-//     currentPrice: 0,
-//     isSold: false,
-//     createdAt: new Date(),
-//     updatedAt: new Date(),
-//     sellerId: 1, // Assuming this is the current user's ID
-//     isLive: false,
-//     scheduledStartTime: new Date(Date.now() + 86400000), // 24 hours from now
-//     duration: 168, // 7 days
-//     photos: {
-//       obsPhoto:
-//         "https://pxqmxxjuewlpptvibnhg.supabase.co/storage/v1/object/public/coins/coins/obs-df2fa651-33ae-430b-a11f-900ad465b13e",
-//       revPhoto:
-//         "https://pxqmxxjuewlpptvibnhg.supabase.co/storage/v1/object/public/coins/coins/rev-df2fa651-33ae-430b-a11f-900ad465b13e",
-//     },
-//     watchCount: 0,
-//     bidCount: 0,
-//   },
-// ];
+const loggedInUserId = 1; // Replace with actual authentication logic
 
 async function getAllAuctionItems() {
   const response = await fetch("/api/get-all-auctions");
+  if (!response.ok) throw new Error("Failed to fetch all auctions");
   return response.json();
 }
 
-export default function Dashboard() {
-  const allAuctionItems = useQuery({
-    queryKey: ["allAuctionItems"],
-    queryFn: getAllAuctionItems,
-  });
+async function fetchWatchedAuctions() {
+  const response = await fetch("/api/get-watched-auction-items");
+  if (!response.ok) throw new Error("Failed to fetch watched auctions");
+  return response.json();
+}
 
+async function fetchAll() {
+  const watchedAuctions = await fetchWatchedAuctions();
+  const allAuctionItems = await getAllAuctionItems();
+
+  const watchedAuctionIds = watchedAuctions.map(
+    (auction: AuctionItem) => auction.id
+  );
+  return {
+    allAuctionItems,
+    watchedAuctions,
+    watchedAuctionIds,
+  };
+}
+
+export default function Dashboard() {
   const router = useRouter();
   const { budget } = useBudgetStore();
+  const queryClient = useQueryClient();
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["fetchAll"],
+    queryFn: fetchAll,
+  });
+
+  const watchMutation = useMutation({
+    mutationFn: async (auctionId: number) => {
+      const response = await fetch("/api/watch-auction", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ auctionId }),
+      });
+      if (!response.ok) throw new Error("Failed to watch auction");
+      return response.json();
+    },
+    onMutate: async (auctionId) => {
+      await queryClient.cancelQueries({ queryKey: ["fetchAll"] });
+      const previousData = queryClient.getQueryData<typeof data>(["fetchAll"]);
+      queryClient.setQueryData<typeof data>(["fetchAll"], (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          watchedAuctionIds: [...old.watchedAuctionIds, auctionId],
+          watchedAuctions: [
+            ...old.watchedAuctions,
+            old.allAuctionItems.find((a) => a.id === auctionId),
+          ],
+        };
+      });
+      return { previousData };
+    },
+    onError: (err, variables, context) => {
+      if (context?.previousData) {
+        queryClient.setQueryData<typeof data>(
+          ["fetchAll"],
+          context.previousData
+        );
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["fetchAll"] });
+    },
+  });
+
+  const unwatchMutation = useMutation({
+    mutationFn: async (auctionId: number) => {
+      const response = await fetch("/api/unwatch-auction", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ auctionId }),
+      });
+      if (!response.ok) throw new Error("Failed to unwatch auction");
+      return response.json();
+    },
+    onMutate: async (auctionId) => {
+      await queryClient.cancelQueries({ queryKey: ["fetchAll"] });
+      const previousData = queryClient.getQueryData<typeof data>(["fetchAll"]);
+      queryClient.setQueryData<typeof data>(["fetchAll"], (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          watchedAuctionIds: old.watchedAuctionIds.filter(
+            (id) => id !== auctionId
+          ),
+          watchedAuctions: old.watchedAuctions.filter(
+            (a) => a.id !== auctionId
+          ),
+        };
+      });
+      return { previousData };
+    },
+    onError: (err, variables, context) => {
+      if (context?.previousData) {
+        queryClient.setQueryData<typeof data>(
+          ["fetchAll"],
+          context.previousData
+        );
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["fetchAll"] });
+    },
+  });
+
+  const handleWatchToggle = async (auctionId: number) => {
+    if (data?.watchedAuctionIds.includes(auctionId)) {
+      await unwatchMutation.mutateAsync(auctionId);
+    } else {
+      await watchMutation.mutateAsync(auctionId);
+    }
+  };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>An error occurred: {error.message}</div>;
 
   return (
     <div className="container py-8">
@@ -147,7 +161,6 @@ export default function Dashboard() {
         </CardContent>
       </Card>
 
-      {/* Auction Tabs */}
       <Tabs defaultValue="active" className="space-y-4">
         <TabsList>
           <TabsTrigger value="active">Active Auctions</TabsTrigger>
@@ -158,39 +171,39 @@ export default function Dashboard() {
 
         <TabsContent value="active" className="space-y-4">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {/* {auctions.map((auction) => (
-              <AuctionCard key={auction.id} auction={auction} />
-            ))} */}
-            {allAuctionItems.data?.map((auction: any) => (
-              // <AuctionCard key={auction.id} auction={auction} />
-              <div key={auction.id}>{auction.title}</div>
+            {data?.allAuctionItems?.map((auction: AuctionItem) => (
+              <AuctionCard
+                key={auction.id}
+                auction={auction}
+                isWatching={data.watchedAuctionIds.includes(auction.id)}
+                onWatchToggle={handleWatchToggle}
+              />
             ))}
           </div>
         </TabsContent>
 
         <TabsContent value="watching" className="space-y-4">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {/* {auctions.slice(0, 2).map((auction) => (
-              <AuctionCard key={auction.id} auction={auction} />
-            ))} */}
+            {data?.watchedAuctions.map((auction: AuctionItem) => (
+              <AuctionCard
+                key={auction.id}
+                auction={auction}
+                isWatching={true}
+                onWatchToggle={handleWatchToggle}
+              />
+            ))}
           </div>
         </TabsContent>
 
         <TabsContent value="mybids" className="space-y-4">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {/* {auctions.slice(1, 3).map((auction) => (
-              <AuctionCard key={auction.id} auction={auction} />
-            ))} */}
+            {/* Add My Bids content here */}
           </div>
         </TabsContent>
 
         <TabsContent value="myitems" className="space-y-4">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {allAuctionItems.data
-              ?.filter((auction: any) => auction.sellerId === loggedInUserId)
-              .map((auction: any) => (
-                <div key={auction.id}>{auction.title}</div>
-              ))}
+            {/* Add My Items content here */}
           </div>
         </TabsContent>
       </Tabs>
