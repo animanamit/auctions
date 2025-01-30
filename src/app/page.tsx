@@ -186,13 +186,11 @@ export default function Dashboard() {
 
         <TabsContent value="myitems" className="space-y-4">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {/* {myItems.map((item) => (
-              <MyItemCard
-                key={item.id}
-                item={item}
-                onEditClick={() => router.push(`/edit-item/${item.id}`)}
-              />
-            ))} */}
+            {allAuctionItems.data
+              ?.filter((auction: any) => auction.sellerId === loggedInUserId)
+              .map((auction: any) => (
+                <div key={auction.id}>{auction.title}</div>
+              ))}
           </div>
         </TabsContent>
       </Tabs>

@@ -18,8 +18,15 @@ model User {
   clerkId String
   name    String
   email   String
+
+  // Auctions that the user has created
+  Auction Auction[] @relation("CreatedAuctions")
+
+  // Bids the user has placed
   Bid     Bid[]
-  Auction Auction[]
+
+  // Auctions the user is watching
+  WatchedAuction WatchedAuction[]
 }
 
 model Bid {
@@ -28,6 +35,7 @@ model Bid {
   userId    Int
   amount    Int
   createdAt DateTime @default(now())
+
   auction   Auction  @relation(fields: [auctionId], references: [id])
   user      User     @relation(fields: [userId], references: [id])
 }
@@ -37,7 +45,7 @@ model Auction {
   title         String
   description   String
   startingPrice Int     @default(0)
-  currentPrice  Int    @default(0)
+  currentPrice  Int     @default(0)
   startDate     DateTime
   endDate       DateTime
   sellerId      Int
@@ -46,10 +54,27 @@ model Auction {
   isLive        Boolean @default(false)
   createdAt     DateTime @default(now())
   updatedAt     DateTime? @updatedAt
-  watchCount    Int     @default(0)
-  bidCount      Int    @default(0)
+  watchCount    Int      @default(0)
+  bidCount      Int      @default(0)
   photo1        String?
   photo2        String?
+
+  // Bids placed on this auction
   bids          Bid[]
-  seller        User     @relation(fields: [sellerId], references: [id])
+
+  // The seller of the auction
+  seller        User     @relation("CreatedAuctions", fields: [sellerId], references: [id])
+
+  // Users who are watching this auction
+  WatchedBy     WatchedAuction[]
+}
+
+model WatchedAuction {
+  userId    Int
+  auctionId Int
+
+  user      User    @relation(fields: [userId], references: [id])
+  auction   Auction @relation(fields: [auctionId], references: [id])
+
+  @@id([userId, auctionId]) // Composite primary key to prevent duplicate watch entries
 }
