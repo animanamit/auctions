@@ -1,26 +1,26 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-const loggedInUserId = 1; // Global variable for now
+const loggedInUserId = 1; // Replace with actual session/user context
 
 export async function GET() {
   try {
-    const watchedAuctions = await prisma.user.findUnique({
-      where: { id: loggedInUserId },
-      select: {
-        WatchedAuctions: {
+    const watchedAuctions = await prisma.watchedAuction.findMany({
+      where: { userId: loggedInUserId },
+      include: {
+        auction: {
           include: {
-            auction: true,
+            seller: { select: { id: true, name: true, email: true } }, // Include seller details
+            bids: { select: { amount: true, userId: true } }, // Include bids
           },
         },
       },
     });
 
-    if (!watchedAuctions) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
+    // Extract auction objects, or return an empty array if none exist
+    const auctions = watchedAuctions.map((watched) => watched.auction) ?? [];
 
-    return NextResponse.json(watchedAuctions.WatchedAuctions);
+    return NextResponse.json(auctions);
   } catch (error) {
     console.error("Error fetching watched auctions:", error);
     return NextResponse.json(
