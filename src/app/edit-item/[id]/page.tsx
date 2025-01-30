@@ -60,7 +60,9 @@ export default function EditItemPage({ params }: { params: { id: string } }) {
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const response = await fetch(`/api/get-item-by-id/${params.id}`);
+        const response = await fetch(
+          `/api/get-auction-item-by-id/${params.id}`
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch item");
         }

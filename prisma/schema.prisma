@@ -26,7 +26,7 @@ model User {
   Bid     Bid[]
 
   // Auctions the user is watching
-  WatchedAuction WatchedAuction[]
+  WatchedAuctions WatchedAuction[]
 }
 
 model Bid {
