@@ -6,6 +6,7 @@ import { useBudgetStore } from "@/lib/stores/budget-store";
 import type { AuctionItem } from "@/types/auction";
 import { useRouter } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 const loggedInUserId = 1; // Replace with actual authentication logic
 
@@ -53,6 +54,7 @@ export default function Dashboard() {
         body: JSON.stringify({ auctionId }),
       });
       if (!response.ok) throw new Error("Failed to watch auction");
+      toast.success("Auction added to watchlist");
       return response.json();
     },
     onMutate: async (auctionId) => {
@@ -92,6 +94,7 @@ export default function Dashboard() {
         body: JSON.stringify({ auctionId }),
       });
       if (!response.ok) throw new Error("Failed to unwatch auction");
+      toast.success("Auction removed from watchlist");
       return response.json();
     },
     onMutate: async (auctionId) => {
