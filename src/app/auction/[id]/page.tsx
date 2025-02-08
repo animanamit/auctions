@@ -10,26 +10,6 @@ import { BidForm } from "@/components/bid-dialog";
 import { AuctionTimer } from "@/components/auction-timer";
 import type { AuctionItem, Bid } from "@/types/auction";
 
-// Sample data
-const sampleBids: Bid[] = [
-  {
-    id: 1,
-    auctionId: 1,
-    bidderId: 1,
-    bidderName: "John Smith",
-    amount: 1300,
-    timestamp: new Date(Date.now() - 1000000),
-  },
-  {
-    id: 2,
-    auctionId: 1,
-    bidderId: 2,
-    bidderName: "Jane Doe",
-    amount: 1250,
-    timestamp: new Date(Date.now() - 2000000),
-  },
-];
-
 const makeBid = async (bidValue: number) => {
   // Call API to make bid
   console.log(bidValue);
@@ -185,28 +165,7 @@ export default function AuctionPage() {
                 </Button>
               </div>
               <div className="space-y-2">
-                {sampleBids.map((bid) => (
-                  <div
-                    key={bid.id}
-                    className="flex items-center justify-between py-2"
-                  >
-                    <div className="space-y-1">
-                      <p
-                        className={`font-medium ${
-                          !showBidderNames && "blur-sm select-none"
-                        }`}
-                      >
-                        {bid.bidderName}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {bid.timestamp.toLocaleString()}
-                      </p>
-                    </div>
-                    <span className="text-lg font-thin">
-                      ${bid.amount.toLocaleString()}
-                    </span>
-                  </div>
-                ))}
+                <p>No bids yet</p>
               </div>
             </div>
           </Card>
