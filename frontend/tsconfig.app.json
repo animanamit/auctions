@@ -21,11 +21,16 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-
-    /* Paths for backend imports */
+    "baseUrl": ".",
     "paths": {
-      "@backend/*": ["../backend/*"] // Adjusted to point to the backend's src folder
+      "@/*": [
+        "./src/*"
+      ]
     }
+    /* Paths for backend imports */
+    // "paths": {
+    //   "@backend/*": ["../backend/*"] // Adjusted to point to the backend's src folder
+    // }
   },
   "include": ["src"]
 }
