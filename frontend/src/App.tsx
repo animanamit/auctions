@@ -27,7 +27,6 @@ function App() {
 
   return (
     <div className="bg-black h-full w-full flex justify-center items-center">
-      yuh
       <Button
         onClick={() => {
           notify("New bid received", "warning");
