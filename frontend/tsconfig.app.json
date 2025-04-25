@@ -23,14 +23,8 @@
     "noUncheckedSideEffectImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     }
-    /* Paths for backend imports */
-    // "paths": {
-    //   "@backend/*": ["../backend/*"] // Adjusted to point to the backend's src folder
-    // }
   },
   "include": ["src"]
 }
