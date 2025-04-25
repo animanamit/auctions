@@ -14,6 +14,7 @@ function App() {
       >
         send a notification
       </Button>
+      <Link to="/home">Go to home</Link>
       <Link to="/auction/1">Go to auction</Link>
     </div>
   );

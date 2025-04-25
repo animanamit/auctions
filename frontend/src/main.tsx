@@ -6,6 +6,7 @@ import App from "./App.tsx";
 import { NotificationProvider } from "@/contexts/notification-context.tsx";
 import { BrowserRouter, Routes, Route } from "react-router";
 import AuctionPage from "@/pages/auction-page.tsx";
+import Home from "@/pages/home.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -14,6 +15,7 @@ createRoot(document.getElementById("root")!).render(
         <Toaster position="top-right" />
         <Routes>
           <Route path="/" element={<App />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/auction/:id" element={<AuctionPage />} />
         </Routes>
       </NotificationProvider>
