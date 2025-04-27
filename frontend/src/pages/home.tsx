@@ -122,10 +122,6 @@ const Home = () => {
       (selectedCategory === "" || item.category === selectedCategory)
   );
 
-  const categories = [
-    ...new Set(mockAuctionItems.map((item) => item.category)),
-  ];
-
   return (
     <main className="max-w-[1400px] mx-auto px-6 py-12 bg-[#f9f9f7]">
       {/* Header Section */}
@@ -152,22 +148,6 @@ const Home = () => {
         </div>
 
         <div className="flex gap-3 w-full md:w-auto">
-          <div className="relative flex-1 md:flex-initial">
-            <select
-              className="appearance-none w-full pl-4 pr-10 py-3 border-0 bg-white rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-300 text-sm"
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-            >
-              <option value="">All Categories</option>
-              {categories.map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 pointer-events-none" />
-          </div>
-
           <div className="relative flex-1 md:flex-initial">
             <select
               className="appearance-none w-full pl-4 pr-10 py-3 border-0 bg-white rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-300 text-sm"
