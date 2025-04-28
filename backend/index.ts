@@ -1,15 +1,18 @@
-import cors from "cors";
-import express from "express";
+import Fastify from "fastify";
+import routes from "./routes/index.js";
 
-// Create an Express app
-const app = express();
+export async function getServer() {
+  const server = Fastify();
 
-// Enable CORS
-app.use(cors({ origin: "http://localhost:5174" })); // Allow requests from the frontend
+  server.register(routes);
 
-// Add the tRPC middleware to the Express app
+  await server.ready();
 
-// Start the server
-app.listen(3000, () => {
+  return server;
+}
+
+if (process.argv[1] === import.meta.filename) {
+  const server = await getServer();
+  await server.listen({ port: 3000 });
   console.log("Server is running on http://localhost:3000");
-});
+}

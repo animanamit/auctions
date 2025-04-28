@@ -23,7 +23,6 @@ const formatPrice = (price: number) => {
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
   const [sortOption, setSortOption] = useState("featured");
 
   const mockAuctionItems = [
@@ -117,9 +116,8 @@ const Home = () => {
 
   const filteredItems = mockAuctionItems.filter(
     (item) =>
-      (searchTerm === "" ||
-        item.title.toLowerCase().includes(searchTerm.toLowerCase())) &&
-      (selectedCategory === "" || item.category === selectedCategory)
+      searchTerm === "" ||
+      item.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
