@@ -68,8 +68,41 @@ body, #root {
   --color-dark: #2E2E2E;
   --color-gray: #E5E5E3;
   --color-lightgray: #5D5D5D;
+  --color-midgray: #B3B1B2;
   --font-sans: 'Neue Montreal', system-ui, sans-serif;
   --font-serif: 'Instrument Serif', serif;
+}
+
+h1, h2, h3, h4, h5, h6, p, span {
+  color: var(--color-dark);
+}
+
+.text-light {
+  color: var(--color-light);
+}
+
+.text-ultralight {
+  color: var(--color-ultralight);
+}
+
+.text-white {
+  color: #fff;
+}
+
+.text-gray {
+  color: var(--color-gray);
+}
+
+.text-lightgray {
+  color: var(--color-lightgray);
+}
+
+.text-midgray {
+  color: var(--color-midgray);
+}
+
+.avatar-gradient {
+  background: linear-gradient(to bottom, #c4c8c7 0%, #5d6263 50%, #0e0e0e 100%);
 }
 
 @theme inline {

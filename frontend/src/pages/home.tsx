@@ -1,29 +1,25 @@
-import { useState } from "react";
 import { Clock, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { mockAuctionItems } from "@/mock-data";
 import { formatTimeLeft, formatPrice } from "@/utils/helpers";
-
+import Nav from "@/components/nav";
 const Home = () => {
   return (
-    <main className="mx-auto px-6 py-12 bg-light">
-      <div className="mb-16 max-w-3xl">
-        {/* <h1 className="text-9xl font-serif tracking-tight">Auction House</h1> */}
-        <h2 className="text-4xl">Welcome back, Animan</h2>
-      </div>
+    <main className="mx-auto p-18 bg-light flex flex-col gap-8">
+      <Nav />
 
       {/* Auction Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {mockAuctionItems.map((item) => (
           <div
             key={item.id}
-            className="group bg-white rounded-lg overflow-hidden transition-all duration-300 hover:shadow-md"
+            className="group bg-white rounded-lg overflow-hidden transition-all duration-300"
           >
             <div className="relative aspect-square overflow-hidden">
               <img
                 src={item.imageURL || "/placeholder.svg"}
                 alt={item.title}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-full object-cover"
               />
               <button className="absolute top-3 right-3 bg-white/80 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                 <Heart className="h-4 w-4 text-gray-700" />
