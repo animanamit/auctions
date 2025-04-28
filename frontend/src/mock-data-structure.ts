@@ -1,6 +1,7 @@
+//@ts-expect-error just for brainstorming purposes
 import { AuctionItem } from "@/mock-data";
 
-const mockAuctionItemsStructure: AuctionItem[] = [
+export const mockAuctionItemsStructure: AuctionItem[] = [
   {
     id: "1",
     title: "Vintage Rolex Submariner",
