@@ -34,9 +34,6 @@ const Nav = () => {
             <div className="text-left w-full">
               <span className="text-sm">My Auctions</span>
             </div>
-            <div className="text-left w-full">
-              <span className="text-sm">My Account</span>
-            </div>
           </div>
         </CardContent>
       </Card>

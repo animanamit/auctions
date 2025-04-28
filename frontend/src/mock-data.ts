@@ -1,11 +1,4 @@
-export interface AuctionItem {
-  id: string;
-  title: string;
-  currentPrice: number;
-  bids: number;
-  endsAt: Date;
-  imageURL?: string;
-}
+import { AuctionItem } from "@/types/auction";
 
 export const mockAuctionItems: AuctionItem[] = [
   {
@@ -15,6 +8,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 12,
     endsAt: new Date("2024-05-15T18:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "2",
@@ -23,6 +17,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 5,
     endsAt: new Date("2024-05-10T12:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "upcoming",
   },
   {
     id: "3",
@@ -31,6 +26,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 8,
     endsAt: new Date("2024-05-20T15:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "ended",
   },
   {
     id: "4",
@@ -39,6 +35,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 3,
     endsAt: new Date("2024-05-12T20:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "5",
@@ -47,6 +44,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 6,
     endsAt: new Date("2024-05-25T14:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "6",
@@ -55,6 +53,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 9,
     endsAt: new Date("2024-05-22T19:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "upcoming",
   },
   {
     id: "7",
@@ -63,6 +62,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 7,
     endsAt: new Date("2024-05-18T16:30:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "8",
@@ -71,6 +71,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 11,
     endsAt: new Date("2024-05-17T21:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "9",
@@ -79,6 +80,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 15,
     endsAt: new Date("2024-05-30T20:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "upcoming",
   },
   {
     id: "10",
@@ -87,6 +89,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 10,
     endsAt: new Date("2024-05-28T17:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "11",
@@ -95,6 +98,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 14,
     endsAt: new Date("2024-05-29T12:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "12",
@@ -103,6 +107,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 7,
     endsAt: new Date("2024-05-26T18:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "13",
@@ -111,6 +116,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 6,
     endsAt: new Date("2024-05-24T20:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "14",
@@ -119,6 +125,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 13,
     endsAt: new Date("2024-05-31T17:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "15",
@@ -127,6 +134,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 9,
     endsAt: new Date("2024-05-27T15:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "16",
@@ -135,6 +143,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 8,
     endsAt: new Date("2024-05-20T12:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "17",
@@ -143,6 +152,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 10,
     endsAt: new Date("2024-05-23T16:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "18",
@@ -151,6 +161,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 7,
     endsAt: new Date("2024-05-25T19:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "19",
@@ -159,6 +170,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 11,
     endsAt: new Date("2024-05-27T21:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "20",
@@ -167,6 +179,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 13,
     endsAt: new Date("2024-05-30T13:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "21",
@@ -175,6 +188,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 9,
     endsAt: new Date("2024-05-19T17:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "22",
@@ -183,6 +197,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 6,
     endsAt: new Date("2024-05-22T11:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "23",
@@ -191,6 +206,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 7,
     endsAt: new Date("2024-05-24T14:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "24",
@@ -199,6 +215,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 5,
     endsAt: new Date("2024-05-28T18:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "25",
@@ -207,6 +224,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 6,
     endsAt: new Date("2024-05-29T15:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "26",
@@ -215,6 +233,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 7,
     endsAt: new Date("2024-05-27T17:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "27",
@@ -223,6 +242,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 5,
     endsAt: new Date("2024-05-26T19:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "28",
@@ -231,6 +251,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 14,
     endsAt: new Date("2024-05-31T20:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "29",
@@ -239,6 +260,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 6,
     endsAt: new Date("2024-05-25T15:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "30",
@@ -247,6 +269,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 12,
     endsAt: new Date("2024-05-30T18:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "31",
@@ -255,6 +278,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 11,
     endsAt: new Date("2024-05-27T14:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "32",
@@ -263,6 +287,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 7,
     endsAt: new Date("2024-05-29T10:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "33",
@@ -271,6 +296,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 16,
     endsAt: new Date("2024-05-31T11:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "34",
@@ -279,6 +305,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 20,
     endsAt: new Date("2024-05-30T16:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "35",
@@ -287,6 +314,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 5,
     endsAt: new Date("2024-05-26T13:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "36",
@@ -295,6 +323,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 17,
     endsAt: new Date("2024-05-28T17:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "37",
@@ -303,6 +332,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 6,
     endsAt: new Date("2024-05-25T20:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "38",
@@ -311,6 +341,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 9,
     endsAt: new Date("2024-05-29T21:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "39",
@@ -319,6 +350,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 8,
     endsAt: new Date("2024-05-27T19:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "40",
@@ -327,6 +359,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 14,
     endsAt: new Date("2024-05-30T15:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "41",
@@ -335,6 +368,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 13,
     endsAt: new Date("2024-05-31T17:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "42",
@@ -343,6 +377,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 7,
     endsAt: new Date("2024-05-25T12:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "43",
@@ -351,6 +386,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 11,
     endsAt: new Date("2024-05-28T16:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "44",
@@ -359,6 +395,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 5,
     endsAt: new Date("2024-05-27T11:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "45",
@@ -367,6 +404,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 18,
     endsAt: new Date("2024-05-30T14:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "46",
@@ -375,6 +413,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 10,
     endsAt: new Date("2024-05-29T20:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "47",
@@ -383,6 +422,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 15,
     endsAt: new Date("2024-05-31T13:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "48",
@@ -391,6 +431,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 4,
     endsAt: new Date("2024-05-26T15:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "49",
@@ -399,6 +440,7 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 6,
     endsAt: new Date("2024-05-27T18:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
   {
     id: "50",
@@ -407,5 +449,6 @@ export const mockAuctionItems: AuctionItem[] = [
     bids: 20,
     endsAt: new Date("2024-05-31T19:00:00"),
     imageURL: "https://picsum.photos/500",
+    status: "live",
   },
 ];
