@@ -12,46 +12,8 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const formatTimeLeft = (endsAt: Date) => {
-  const now = new Date();
-  const timeLeft = endsAt.getTime() - now.getTime();
-
-  const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-  const hours = Math.floor(
-    (timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-  );
-  const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-
-  if (days > 0) {
-    return `${days}d ${hours}h ${minutes}m`;
-  } else if (hours > 0) {
-    return `${hours}h ${minutes}m`;
-  } else if (minutes > 0) {
-    return `${minutes}m`;
-  } else {
-    return "Ending soon";
-  }
-};
-
-const formatPrice = (price: number) => {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(price);
-};
-
-const formatDate = (date: Date) => {
-  return new Date(date).toLocaleString("en-US", {
-    month: "short",
-    day: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  });
-};
+import { formatTimeLeft, formatPrice } from "@/utils/helpers";
+import { formatDate } from "date-fns";
 
 const AuctionPage = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -392,7 +354,7 @@ const AuctionPage = () => {
                         </span>
                       </div>
                       <div className="text-gray-500">
-                        {formatDate(bid.timestamp)}
+                        {formatDate(bid.timestamp, "MMM d, yyyy h:mm a")}
                       </div>
                     </div>
                   </div>
