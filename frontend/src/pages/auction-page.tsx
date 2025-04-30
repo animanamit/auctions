@@ -2,23 +2,26 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Clock, Heart, ArrowLeft, Users, AlertCircle } from "lucide-react";
+import { Clock, Heart, ArrowLeft, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { formatTimeLeft, formatPrice } from "@/utils/helpers";
 import { mockAuctionItems } from "@/mock-data";
 import { io, Socket } from "socket.io-client";
 import { toast } from "sonner";
+import { BidForm } from "@/components/bid-form";
+import { BidHistory } from "@/components/bid-history";
+import { useNotification } from "@/contexts/notification-context";
 
-const AuctionPage = () => {
+export const AuctionPage = () => {
   const { id } = useParams<{ id: string }>();
   const [isWatching, setIsWatching] = useState(false);
-  const [bidAmount, setBidAmount] = useState("");
   const [socket, setSocket] = useState<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [userCount, setUserCount] = useState(1); // Start with 1 (current user)
   const [latestBids, setLatestBids] = useState<
     Array<{ message: string; timestamp: string }>
   >([]);
+  const { addNotification } = useNotification();
 
   // Find the auction item from the mock data
   // In a real implementation, this would be fetched from the API
@@ -32,27 +35,56 @@ const AuctionPage = () => {
     newSocket.on("connect", () => {
       console.log("Connected to WebSocket server");
       setIsConnected(true);
-      toast.success(`Connected to live updates for "${auctionItem.title}"`);
+      // Only show toast on first connection, not on reconnects
+      if (!socket) {
+        toast.success(`Connected to live updates`, { id: "connection-toast" });
+      }
     });
 
     newSocket.on("disconnect", () => {
       console.log("Disconnected from WebSocket server");
       setIsConnected(false);
-      toast.error(`Disconnected from live updates for "${auctionItem.title}"`);
+      // No toast for disconnection to avoid too many notifications
     });
 
     newSocket.on("auction-update", (data) => {
       console.log("Received auction update:", data);
       if (data.type === "test") {
-        // For now, we'll display our test messages
-        setLatestBids((prev) => [
-          { message: data.message, timestamp: data.timestamp },
-          ...prev.slice(0, 4), // Keep only latest 5 bids
-        ]);
+        // Only add to latest bids if this is a new message or one we don't already have
+        // This prevents duplicate bids in the list when our own bid comes back from server
+        const messageExists = latestBids.some(bid => 
+          bid.message === data.message && bid.timestamp === data.timestamp
+        );
+        
+        if (!messageExists) {
+          // For now, we'll display our test messages
+          setLatestBids((prev) => [
+            { message: data.message, timestamp: data.timestamp },
+            ...prev.slice(0, 4), // Keep only latest 5 bids
+          ]);
+        }
 
         console.log(data);
 
-        toast.info(`New bid received for "${auctionItem.title}"!`);
+        // Create a notification for the bid update only if it's not our own bid
+        // We already created a notification for our own bid in handlePlaceBid
+        const isBidFromCurrentUser = data.message.startsWith("Bid placed:");
+        if (!isBidFromCurrentUser) {
+          addNotification({
+            message: data.message,
+            type: "bid",
+            auctionId: auctionItem.id,
+            auctionTitle: auctionItem.title,
+          });
+        }
+      }
+    });
+
+    // Listen for room count updates
+    newSocket.on("room-count-update", (data) => {
+      console.log("Room count update:", data);
+      if (data.auctionId === id) {
+        setUserCount(data.count);
       }
     });
 
@@ -62,7 +94,7 @@ const AuctionPage = () => {
     return () => {
       newSocket.disconnect();
     };
-  }, [auctionItem.title]);
+  }, [auctionItem.title, auctionItem.id, id, addNotification]);
 
   // Join auction room when component mounts or auction ID changes
   useEffect(() => {
@@ -81,51 +113,54 @@ const AuctionPage = () => {
 
   const toggleWatch = () => {
     setIsWatching(!isWatching);
+
+    if (!isWatching) {
+      // Add "watching" notification when user starts watching
+      addNotification({
+        message: `You are now watching "${auctionItem.title}"`,
+        type: "watched",
+        auctionId: auctionItem.id,
+        auctionTitle: auctionItem.title,
+      });
+    }
   };
 
-  const handleBidSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handlePlaceBid = (amount: number) => {
     if (!socket || !isConnected) {
-      toast.error("Not connected to auction server");
+      toast.error("Not connected to auction server", { id: "connection-error-toast" });
       return;
     }
 
-    if (!bidAmount.trim()) {
-      toast.error("Please enter a bid amount");
-      return;
-    }
-
-    const amount = parseFloat(bidAmount);
-
-    if (isNaN(amount)) {
-      toast.error("Please enter a valid number");
-      return;
-    }
-
-    if (amount <= auctionItem.currentPrice) {
-      toast.error(
-        `Bid must be higher than current price (${formatPrice(
-          auctionItem.currentPrice
-        )})`
-      );
-      return;
-    }
-
+    // Create bid data with a timestamp to ensure consistent display across tabs
+    const timestamp = new Date().toISOString();
+    const bidMessage = `Bid placed: ${formatPrice(amount)}`;
+    
     // In a real implementation, this would call an API to place the bid
     // For now, we'll just simulate it with the WebSocket test-broadcast
-    socket.emit("test-broadcast", id, `Bid placed: ${formatPrice(amount)}`);
+    // Include a timestamp in the broadcast to ensure consistent display
+    socket.emit("test-broadcast", id, bidMessage, timestamp);
+    
+    // Update local latest bids immediately to avoid lag
+    // This will be overwritten when the server broadcasts back to all clients
+    setLatestBids(prev => [
+      { message: bidMessage, timestamp },
+      ...prev.slice(0, 4) // Keep only 5 most recent
+    ]);
 
-    toast.success(
-      `Bid of ${formatPrice(amount)} placed successfully on "${
-        auctionItem.title
-      }"!`
-    );
-    setBidAmount("");
+    // Create a unique ID for this bid's toast to prevent duplicates
+    // (Note: we're not using this directly anymore since our notification system handles IDs)
+    
+    // Add notification for the user's own bid with a custom type that ensures only one toast
+    addNotification({
+      message: `Your bid of ${formatPrice(amount)} was placed successfully`,
+      type: "success", // This will show a toast because it's in the allowed types
+      auctionId: auctionItem.id,
+      auctionTitle: auctionItem.title,
+    });
   };
 
   return (
-    <main className="mx-auto px-6 py-12">
+    <main>
       {/* Back Button */}
       <div className="mb-8">
         <Button
@@ -138,18 +173,29 @@ const AuctionPage = () => {
         </Button>
       </div>
 
-      {/* Connection Status */}
-      <div className="mb-4 flex items-center gap-2">
-        <div
-          className={`w-2 h-2 rounded-full ${
-            isConnected ? "bg-green-500" : "bg-red-500"
-          }`}
-        ></div>
-        <span className="text-sm text-gray-500">
-          {isConnected
-            ? "Connected to live updates"
-            : "Not connected to live updates"}
-        </span>
+      {/* Connection Status with User Count */}
+      <div className="mb-4 flex items-center gap-6">
+        <div className="flex items-center gap-2">
+          <div
+            className={`w-2 h-2 rounded-full ${
+              isConnected ? "bg-green-500" : "bg-red-500"
+            }`}
+          ></div>
+          <span className="text-sm text-gray-500">
+            {isConnected
+              ? "Connected to live updates"
+              : "Not connected to live updates"}
+          </span>
+        </div>
+
+        {isConnected && (
+          <div className="flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-full">
+            <Users className="h-3.5 w-3.5 text-gray-600" />
+            <span className="text-sm font-medium text-gray-700">
+              {userCount} {userCount === 1 ? "person" : "people"} watching
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Header Section */}
@@ -215,26 +261,7 @@ const AuctionPage = () => {
           {/* Latest Bids Section */}
           <div className="mt-6 bg-white p-6 rounded-lg">
             <h3 className="text-lg font-medium mb-4">Latest Bids</h3>
-            {latestBids.length > 0 ? (
-              <div className="space-y-3">
-                {latestBids.map((bid, index) => (
-                  <div
-                    key={index}
-                    className="flex justify-between items-center p-3 rounded-lg bg-gray-50"
-                  >
-                    <div className="font-medium">{bid.message}</div>
-                    <div className="text-xs text-gray-500">
-                      {new Date(bid.timestamp).toLocaleTimeString()}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-4 text-gray-500">
-                <AlertCircle className="h-5 w-5 mx-auto mb-2" />
-                <p>No bids yet. Be the first to bid!</p>
-              </div>
-            )}
+            <BidHistory bids={latestBids} />
           </div>
         </div>
 
@@ -259,41 +286,12 @@ const AuctionPage = () => {
               </div>
             </div>
 
-            <form onSubmit={handleBidSubmit} className="space-y-3">
-              <div>
-                <label
-                  htmlFor="bidAmount"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Your Bid
-                </label>
-                <Input
-                  id="bidAmount"
-                  type="number"
-                  step="0.01"
-                  min={auctionItem.currentPrice + 1}
-                  value={bidAmount}
-                  onChange={(e) => setBidAmount(e.target.value)}
-                  placeholder={`Enter amount higher than ${formatPrice(
-                    auctionItem.currentPrice
-                  )}`}
-                  className="w-full"
-                  required
-                />
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full bg-gray-900 hover:bg-gray-800 text-white py-6 rounded-lg text-base"
-                disabled={!isConnected}
-              >
-                {isConnected ? "Place Bid" : "Connecting..."}
-              </Button>
-            </form>
-
-            <div className="text-xs text-center text-gray-500 mt-3">
-              By placing a bid, you agree to our terms of service
-            </div>
+            <BidForm
+              auctionId={auctionItem.id}
+              currentPrice={auctionItem.currentPrice}
+              isConnected={isConnected}
+              onPlaceBid={handlePlaceBid}
+            />
           </div>
         </div>
       </div>

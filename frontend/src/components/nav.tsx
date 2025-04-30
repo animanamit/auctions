@@ -1,8 +1,8 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bell } from "lucide-react";
-const Nav = () => {
+import { NotificationDropdown } from "./notification-dropdown";
+
+export const Nav = () => {
   return (
     <nav>
       <Card className="w-full gap-4">
@@ -11,10 +11,8 @@ const Nav = () => {
             <h2 className="text-2xl text-midgray">Welcome,</h2>
             <h2 className="text-2xl">Animan</h2>
           </CardTitle>
-          <div className="flex gap-2">
-            <Button variant="ghost" size="icon">
-              <Bell className="h-4 w-4" />
-            </Button>
+          <div className="flex gap-2 items-center">
+            <NotificationDropdown />
             <Avatar className="avatar-gradient text-white h-8 w-8">
               <AvatarFallback className="text-white text-xs">AA</AvatarFallback>
             </Avatar>
