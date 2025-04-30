@@ -5,7 +5,7 @@ import { formatPrice } from "@/utils/helpers";
 import { toast } from "sonner";
 
 // Helper function to determine minimum bid increment based on current price
-function getMinimumBidIncrement(currentBid: number): number {
+export function getMinimumBidIncrement(currentBid: number): number {
   if (currentBid < 100) return 5;
   if (currentBid < 500) return 10;
   if (currentBid < 1000) return 25;
@@ -20,56 +20,58 @@ interface BidFormProps {
   onPlaceBid: (amount: number) => void;
 }
 
-export const BidForm = ({ 
-  auctionId, 
-  currentPrice, 
+export const BidForm = ({
+  // auctionId,
+  currentPrice,
   isConnected,
-  onPlaceBid 
+  onPlaceBid,
 }: BidFormProps) => {
   const [bidAmount, setBidAmount] = useState<string>("");
-  
+
   // Calculate minimum bid
   const minIncrement = getMinimumBidIncrement(currentPrice);
   const minBid = currentPrice + minIncrement;
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!isConnected) {
       toast.error("Not connected to auction server");
       return;
     }
-    
+
     if (!bidAmount.trim()) {
       toast.error("Please enter a bid amount");
       return;
     }
-    
+
     const amount = parseFloat(bidAmount);
-    
+
     if (isNaN(amount)) {
       toast.error("Please enter a valid number");
       return;
     }
-    
+
     if (amount <= currentPrice) {
       toast.error(
         `Bid must be higher than current price (${formatPrice(currentPrice)})`
       );
       return;
     }
-    
+
     if (amount < minBid) {
       toast.error(
-        `Bid must be at least ${formatPrice(minBid)} (${formatPrice(minIncrement)} more than current price)`
+        `Bid must be at least ${formatPrice(minBid)} (${formatPrice(
+          minIncrement
+        )} more than current price)`
       );
       return;
     }
-    
+
     onPlaceBid(amount);
     setBidAmount("");
   };
-  
+
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
       <div>
@@ -91,7 +93,7 @@ export const BidForm = ({
           required
         />
       </div>
-      
+
       <Button
         type="submit"
         className="w-full bg-gray-900 hover:bg-gray-800 text-white py-6 rounded-lg text-base"
@@ -99,7 +101,7 @@ export const BidForm = ({
       >
         {isConnected ? "Place Bid" : "Connecting..."}
       </Button>
-      
+
       <div className="text-xs text-center text-gray-500">
         By placing a bid, you agree to our terms of service
       </div>

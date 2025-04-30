@@ -1,10 +1,10 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { NotificationDropdown } from "./notification-dropdown";
 
 export const Nav = () => {
   return (
-    <nav>
+    <nav className="sticky top-0 z-50 bg-white">
       <Card className="w-full gap-4">
         <CardHeader className="flex justify-between">
           <CardTitle className="flex gap-2">
@@ -18,22 +18,6 @@ export const Nav = () => {
             </Avatar>
           </div>
         </CardHeader>
-        <CardContent>
-          <div className="flex justify-evenly w-full">
-            <div className="text-left w-full">
-              <span className="text-sm">Live Auctions</span>
-            </div>
-            <div className="text-left w-full">
-              <span className="text-sm">Watched Items</span>
-            </div>
-            <div className="text-left w-full">
-              <span className="text-sm">My Bids</span>
-            </div>
-            <div className="text-left w-full">
-              <span className="text-sm">My Auctions</span>
-            </div>
-          </div>
-        </CardContent>
       </Card>
     </nav>
   );

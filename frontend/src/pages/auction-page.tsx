@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Clock, Heart, ArrowLeft, Users } from "lucide-react";
@@ -52,10 +50,11 @@ export const AuctionPage = () => {
       if (data.type === "test") {
         // Only add to latest bids if this is a new message or one we don't already have
         // This prevents duplicate bids in the list when our own bid comes back from server
-        const messageExists = latestBids.some(bid => 
-          bid.message === data.message && bid.timestamp === data.timestamp
+        const messageExists = latestBids.some(
+          (bid) =>
+            bid.message === data.message && bid.timestamp === data.timestamp
         );
-        
+
         if (!messageExists) {
           // For now, we'll display our test messages
           setLatestBids((prev) => [
@@ -127,29 +126,31 @@ export const AuctionPage = () => {
 
   const handlePlaceBid = (amount: number) => {
     if (!socket || !isConnected) {
-      toast.error("Not connected to auction server", { id: "connection-error-toast" });
+      toast.error("Not connected to auction server", {
+        id: "connection-error-toast",
+      });
       return;
     }
 
     // Create bid data with a timestamp to ensure consistent display across tabs
     const timestamp = new Date().toISOString();
     const bidMessage = `Bid placed: ${formatPrice(amount)}`;
-    
+
     // In a real implementation, this would call an API to place the bid
     // For now, we'll just simulate it with the WebSocket test-broadcast
     // Include a timestamp in the broadcast to ensure consistent display
     socket.emit("test-broadcast", id, bidMessage, timestamp);
-    
+
     // Update local latest bids immediately to avoid lag
     // This will be overwritten when the server broadcasts back to all clients
-    setLatestBids(prev => [
+    setLatestBids((prev) => [
       { message: bidMessage, timestamp },
-      ...prev.slice(0, 4) // Keep only 5 most recent
+      ...prev.slice(0, 4), // Keep only 5 most recent
     ]);
 
     // Create a unique ID for this bid's toast to prevent duplicates
     // (Note: we're not using this directly anymore since our notification system handles IDs)
-    
+
     // Add notification for the user's own bid with a custom type that ensures only one toast
     addNotification({
       message: `Your bid of ${formatPrice(amount)} was placed successfully`,
