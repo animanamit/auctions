@@ -1,21 +1,14 @@
-import { Button } from "@/components/ui/button";
-import { useNotification } from "@/contexts/notification-context";
-import { Link } from "react-router";
+import Nav from "./components/nav";
+import { AuctionItems } from "./components/auction-items";
 
 function App() {
-  const { notify } = useNotification();
-
   return (
-    <div className=" h-full w-full flex justify-center items-center">
-      <Button
-        onClick={() => {
-          notify("New bid received", "warning");
-        }}
-      >
-        send a notification
-      </Button>
-      <Link to="/home">Go to home</Link>
-      <Link to="/auction/1">Go to auction</Link>
+    <div className="min-h-screen bg-gray-50">
+      <Nav />
+      <main className="container mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-6">Featured Auctions</h1>
+        <AuctionItems />
+      </main>
     </div>
   );
 }
