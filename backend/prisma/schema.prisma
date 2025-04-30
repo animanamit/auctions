@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AuctionStatus {
+  PENDING
+  ACTIVE
+  ENDED
+  CANCELLED
+}
+
+model User {
+  id              String           @id @default(uuid())
+  name            String
+  email           String           @unique
+  avatarUrl       String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  // Relations
+  auctions        Auction[]        @relation("SellerAuctions")
+  bids            Bid[]
+  watchedAuctions WatchList[]
+  SellerAuctions  SellerAuctions[]
+
+  @@map("users")
+}
+
+model Auction {
+  id               String           @id @default(uuid())
+  title            String
+  description      String
+  startingPrice    Float
+  currentPrice     Float
+  imageUrl         String?
+  status           AuctionStatus    @default(PENDING)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  startsAt         DateTime?
+  endsAt           DateTime
+  // Features
+  hasReservePrice  Boolean          @default(false)
+  reservePrice     Float?
+  hasAutoExtend    Boolean          @default(false)
+  extensionMinutes Int?
+  hasBuyItNow      Boolean          @default(false)
+  buyItNowPrice    Float?
+  // Relations
+  sellerId         String
+  seller           User             @relation("SellerAuctions", fields: [sellerId], references: [id])
+  bids             Bid[]
+  watchers         WatchList[]
+  SellerAuctions   SellerAuctions[]
+
+  @@map("auctions")
+}
+
+model Bid {
+  id        String   @id @default(uuid())
+  amount    Float
+  createdAt DateTime @default(now())
+  // Relations
+  auctionId String
+  auction   Auction  @relation(fields: [auctionId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("bids")
+}
+
+model WatchList {
+  createdAt DateTime @default(now())
+  // Relations
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  auctionId String
+  auction   Auction  @relation(fields: [auctionId], references: [id])
+
+  // Composite primary key
+  @@id([userId, auctionId])
+  @@map("watch_list")
+}
+
+// Model for simulated users for mock data
+model MockUser {
+  id               String @id @default(uuid())
+  name             String
+  email            String @unique
+  avatarUrl        String
+  bidderProfile    String // aggressive, cautious, sniper, strategic
+  bidFrequency     Float // 0-1 scale
+  maxBidMultiplier Float
+  sniperThreshold  Float?
+
+  @@map("mock_users")
+}
+
+model SellerAuctions {
+  sellerId  String
+  seller    User    @relation(fields: [sellerId], references: [id])
+  auctionId String
+  auction   Auction @relation(fields: [auctionId], references: [id])
+
+  @@id([sellerId, auctionId])
+  @@map("seller_auctions")
+}

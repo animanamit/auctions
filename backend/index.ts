@@ -1,5 +1,12 @@
 import Fastify from "fastify";
 import routes from "./routes/index.js";
+import { Server } from "socket.io";
+import dotenv from "dotenv";
+import { PrismaClient } from "@prisma/client";
+
+dotenv.config();
+
+const prisma = new PrismaClient();
 
 export async function getServer() {
   const server = Fastify();
